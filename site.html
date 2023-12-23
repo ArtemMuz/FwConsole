@@ -1,35 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Сайт для отправки данных в Discord</title>
+    <title>Сайт для взаимодействия с ботом Discord</title>
 </head>
 <body>
-    <form action="api/data" method="post">
-        <input type="text" name="data" placeholder="Введите данные">
-        <input type="submit" value="Отправить">
-    </form>
-
-    <h2>Сообщения из Discord</h2>
-    <ul id="messages"></ul>
+    <div>
+        <input type="text" id="data">
+        <button onclick="sendData()">Отправить</button>
+    </div>
 
     <script>
-        const messages = document.querySelector("#messages");
+        function sendData() {
+            // Получаем данные из текстовой строки
+            var data = document.getElementById("data").value;
 
-        const getMessage = async () => {
-            const response = await fetch("https://artemmuz.github.io/FwConsole/api/messages");
-            const data = await response.json();
-
-            for (const message of data) {
-                const li = document.createElement("li");
-                li.textContent = message;
-                messages.appendChild(li);
-            }
-        };
-
-        getMessage();
-
-        setInterval(getMessage, 1000);
+            // Отправляем данные боту
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://api.discord.com/webhooks/MTE4ODA1NTA5MjI4OTYwOTczOA.Gv2Jd4.FleGCpX4CxDPdgd8rhCIgWMzAR-tWuMXG3UMWo/", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({
+                "content": data
+            }));
+        }
     </script>
 </body>
 </html>
